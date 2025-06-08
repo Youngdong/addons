@@ -262,7 +262,7 @@ def ezville_loop(config):
   
 
     # MQTT 통신 연결 Callback
-    def on_connect(client, userdata, flags, rc):
+    def on_connect(client, userdata, flags, rc, properties):
         if rc == 0:
             log('[INFO] MQTT Broker 연결 성공')
             # Socket인 경우 MQTT 장치의 명령 관련과 MQTT Status (Birth/Last Will Testament) Topic만 구독
@@ -309,7 +309,7 @@ def ezville_loop(config):
  
 
     # MQTT 통신 연결 해제 Callback
-    def on_disconnect(client, userdata, rc):
+    def on_disconnect(client, userdata, rc, properties):
         log('INFO: MQTT 연결 해제')
         pass
 
@@ -976,7 +976,8 @@ def ezville_loop(config):
 
         
     # MQTT 통신
-    mqtt_client = mqtt.Client('mqtt-ezville')
+    #mqtt_client = mqtt.Client('mqtt-ezville')
+    mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
     mqtt_client.username_pw_set(config['mqtt_id'], config['mqtt_password'])
     mqtt_client.on_connect = on_connect
     mqtt_client.on_disconnect = on_disconnect
